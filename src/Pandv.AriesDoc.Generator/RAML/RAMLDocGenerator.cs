@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Pandv.AriesDoc.Generator.RAML
 {
@@ -16,7 +15,25 @@ namespace Pandv.AriesDoc.Generator.RAML
 
         public IEnumerable<IDocument> Generate()
         {
-            throw new NotImplementedException();
+            foreach (var group in apiDescription.ApiDescriptionGroups.Items)
+            {
+                var doc = new RAMLDocument
+                {
+                    Title = group.GroupName
+                };
+
+                foreach (var item in group.Items)
+                {
+                    var resource = doc.Resources.TryGetElement<Resource>(item.RelativePath);
+                    if (resource == null)
+                    {
+                        resource = new Resource() { Key = item.RelativePath };
+                        doc.Resources.AddElement(resource);
+                    }
+                }
+
+                yield return doc;
+            } 
         }
     }
 }

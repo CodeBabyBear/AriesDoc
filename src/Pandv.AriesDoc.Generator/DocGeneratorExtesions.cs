@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Pandv.AriesDoc.Generator.RAML;
 
 namespace Pandv.AriesDoc.Generator
 {
@@ -18,6 +19,12 @@ namespace Pandv.AriesDoc.Generator
         {
             options.Conventions.Add(new ApiExplorerConvention());
             return options;
+        }
+
+        public static IServiceCollection AddRAMLDocGenerator(this IServiceCollection services)
+        {
+            return services.AddApiExplorer()
+                .AddTransient<IDocGenerator, RAMLDocGenerator>();
         }
     }
 }
