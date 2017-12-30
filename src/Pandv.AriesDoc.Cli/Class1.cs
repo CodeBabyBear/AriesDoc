@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Pandv.AriesDoc.Cli
+﻿namespace Pandv.AriesDoc.Cli
 {
     public class Class1
     {
