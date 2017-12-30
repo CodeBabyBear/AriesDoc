@@ -9,11 +9,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Pandv.AriesDoc.Generator;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
 namespace Example
 {
     public class Program
     {
+        public string Name { get; set; }
+
         public static void Main(string[] args)
         {
             var host = BuildWebHost(args);

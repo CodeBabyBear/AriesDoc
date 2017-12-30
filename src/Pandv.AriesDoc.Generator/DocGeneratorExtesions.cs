@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Pandv.AriesDoc.Generator.RAML;
+using System;
+using System.Reflection;
 
 namespace Pandv.AriesDoc.Generator
 {
@@ -24,7 +26,15 @@ namespace Pandv.AriesDoc.Generator
         public static IServiceCollection AddRAMLDocGenerator(this IServiceCollection services)
         {
             return services.AddApiExplorer()
+                .AddTransient<IMethodConverter, MethodConverter>()
+                .AddTransient<IParameterConverter, ParameterConverter>()
                 .AddTransient<IDocGenerator, RAMLDocGenerator>();
+        }
+
+        public static bool IsNullable(this Type type)
+        {
+            return type == typeof(string) || Nullable.GetUnderlyingType(type) != null ||
+                   (type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>));
         }
     }
 }

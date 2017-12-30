@@ -10,12 +10,14 @@ namespace Pandv.AriesDoc.Generator.RAML
         //public IDictionary<string, Parameter> UriParameters { get; set; }
         //public IEnumerable<Protocol> Protocols { get; set; }
         //public IEnumerable<Method> Methods { get; set; }
+        public ArrayElement UriParameters { get; } = new ArrayElement() { Key = "uriParameters", WithKey = true };
 
-        public override void SerializeToString(StringBuilder sb)
+        public bool HasUriParameters { get => UriParameters.HasElements; }
+
+        public Resource() : base()
         {
-            sb.Append(Key.Indent(Depth));
-            sb.AppendLine(":");
-            base.SerializeToString(sb);
+            WithKey = true;
+            AddElement(UriParameters);
         }
     }
 }

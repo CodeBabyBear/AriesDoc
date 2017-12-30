@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 
 namespace Pandv.AriesDoc.Generator.RAML
 {
@@ -37,6 +38,17 @@ namespace Pandv.AriesDoc.Generator.RAML
             AddElement(new PropertyElement() { Key = KeyVersion, Value = string.Empty });
             AddElement(Resources);
             Resources.Depth = Depth;
+        }
+
+        public Resource GetOrAddResource(string key, Func<Resource> func = null)
+        {
+            var resource = Resources.TryGetElement<Resource>(key);
+            if (resource == null)
+            {
+                resource = func == null ? new Resource() { Key = key } : func();
+                Resources.AddElement(resource);
+            }
+            return resource;
         }
 
         public string Serialize()

@@ -11,7 +11,7 @@ namespace Pandv.AriesDoc.Generator.RAML
 
         public void SerializeToString(StringBuilder sb)
         {
-            if (Value != null)
+            if (Value != null && !string.IsNullOrWhiteSpace(Value.ToString()))
             {
                 sb.AppendLine($"{Key}: {Value}".Indent(Depth));
             }

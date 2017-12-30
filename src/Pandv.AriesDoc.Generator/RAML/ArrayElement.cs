@@ -7,16 +7,39 @@ namespace Pandv.AriesDoc.Generator.RAML
 {
     public class ArrayElement : IRAMLElement
     {
+        private int depth;
         protected IDictionary<string, IRAMLElement> elements = new Dictionary<string, IRAMLElement>(StringComparer.OrdinalIgnoreCase);
 
         public string Key { get; set; }
         public int Order { get; set; }
         public object Value { get => elements; set => value.ToString(); }
-        public int Depth { get; set; }
+        public int Count { get => elements.Count; }
+        public bool WithKey { get; set; }
+        public bool HasElements { get => elements.Count > 0; }
+
+        public int Depth
+        {
+            get => depth;
+            set
+            {
+                depth = value;
+                foreach (var item in elements)
+                {
+                    item.Value.Depth = value + 1;
+                }
+            }
+        }
+
         public IEnumerable<IRAMLElement> Elements { get => elements.Values.OrderBy(i => i.Order); }
 
         public virtual void SerializeToString(StringBuilder sb)
         {
+            if (!HasElements) return;
+            if (WithKey)
+            {
+                sb.Append(Key.Indent(Depth));
+                sb.AppendLine(":");
+            }
             foreach (var item in Elements)
             {
                 item.SerializeToString(sb);
