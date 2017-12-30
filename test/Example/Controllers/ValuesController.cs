@@ -1,9 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Example.Controllers
 {
@@ -13,7 +9,7 @@ namespace Example.Controllers
     {
         // GET api/values
         [HttpGet]
-        [ProducesResponseType(404,Type = typeof(bool))]
+        [ProducesResponseType(404, Type = typeof(bool))]
         [ProducesResponseType(200, Type = typeof(IEnumerable<string>))]
         public IEnumerable<string> Get([FromQuery]int gg, [FromQuery]decimal cc)
         {

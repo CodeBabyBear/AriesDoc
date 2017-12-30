@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace Pandv.AriesDoc.Generator.RAML
+﻿namespace Pandv.AriesDoc.Generator.RAML
 {
     public class Resource : ArrayElement
     {
