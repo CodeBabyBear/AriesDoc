@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 
 namespace Pandv.AriesDoc.Generator.RAML
 {
@@ -13,7 +14,17 @@ namespace Pandv.AriesDoc.Generator.RAML
         {
             if (Value != null && !string.IsNullOrWhiteSpace(Value.ToString()))
             {
-                sb.AppendLine($"{Key}: {Value}".Indent(Depth));
+                if (!Value.ToString().Contains(Environment.NewLine))
+                    sb.AppendLine($"{Key}: {Value}".Indent(Depth));
+                else
+                {
+                    sb.AppendLine($"{Key}: |".Indent(Depth));
+                    foreach (var item in Value.ToString()
+                        .Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        sb.AppendLine(item.Indent(Depth + 1));
+                    }
+                }
             }
         }
     }

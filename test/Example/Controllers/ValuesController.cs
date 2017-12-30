@@ -7,16 +7,18 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Example.Controllers
 {
-    //[ApiExplorerSettings(GroupName = "Values")]
+    [ApiExplorerSettings(GroupName = "Values")]
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
         // GET api/values
-        //[HttpGet]
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
+        [HttpGet]
+        [ProducesResponseType(404,Type = typeof(bool))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<string>))]
+        public IEnumerable<string> Get([FromQuery]int gg, [FromQuery]decimal cc)
+        {
+            return new string[] { "value1", "value2" };
+        }
 
         /// <summary>
         /// GET api/values/5
@@ -31,7 +33,7 @@ namespace Example.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public void Post([FromBody]string value, [FromBody]Program v1)
         {
         }
 

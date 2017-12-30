@@ -19,7 +19,7 @@ namespace Example
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc(o => o.UseCentralRoutePrefix("/AD/SDF/").SetApiExplorerVisible());
-            services.AddRAMLDocGenerator();
+            services.AddRAMLDocGeneratorV08();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

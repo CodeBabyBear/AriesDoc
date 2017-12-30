@@ -14,7 +14,7 @@ namespace Pandv.AriesDoc.Generator.RAML
         public const string KeyMediaType = "mediaType";
 
         public string RAMLVersion { get => elements[KeyRAMLVersion].Value.ToString(); set => elements[KeyRAMLVersion].Value = value; }
-        public string Title { get => elements[KeyTitle].Value.ToString(); set => elements[KeyTitle].Value = value; }
+        public string Title { get => elements[KeyTitle].Value?.ToString(); set => elements[KeyTitle].Value = value; }
         public string Version { get => elements[KeyVersion].Value.ToString(); set => elements[KeyVersion].Value = value; }
         public string BaseUri { get => elements[KeyBaseUri].Value.ToString(); set => elements[KeyBaseUri].Value = value; }
 

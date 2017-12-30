@@ -7,12 +7,12 @@ using System.Collections.Generic;
 
 namespace Pandv.AriesDoc.Generator.RAML
 {
-    public class ParameterConverter : IParameterConverter
+    public class ParameterConverterV08 : IParameterConverter
     {
         private IDictionary<Type, string> typeMap = new Dictionary<Type, string>();
         private JsonSchemaGenerator schemaGenerator = new JsonSchemaGenerator();
 
-        public ParameterConverter()
+        public ParameterConverterV08()
         {
             typeMap.Add(typeof(string), "string");
             var integer = "integer";
@@ -53,13 +53,12 @@ namespace Pandv.AriesDoc.Generator.RAML
             return paramter.ParameterDescriptor is ControllerParameterDescriptor apiParam && apiParam.ParameterInfo.HasDefaultValue
                 ? JsonConvert.SerializeObject(apiParam.ParameterInfo.DefaultValue)
                 : string.Empty;
-            
         }
 
         private bool IsRequired(ApiParameterDescription paramter)
         {
             var apiParam = paramter.ParameterDescriptor as ControllerParameterDescriptor;
-            return apiParam == null ? !paramter.Type.IsNullable() 
+            return apiParam == null ? !paramter.Type.IsNullable()
                 : (!apiParam.ParameterInfo?.IsOptional).GetValueOrDefault();
         }
 
@@ -67,9 +66,20 @@ namespace Pandv.AriesDoc.Generator.RAML
         {
             if (!typeMap.ContainsKey(type))
             {
-                typeMap[type] = "|" + Environment.NewLine + schemaGenerator.Generate(type).ToString();
+                typeMap[type] = schemaGenerator.Generate(type).ToString();
             }
             return typeMap[type];
+        }
+
+        public IRAMLElement ConvertByType(Type type)
+        {
+            var res = new Parameter()
+            {
+                Key = string.Empty,
+                ParameterType = ConvertParamterType(type)
+            };
+            res.WithKey = false;
+            return res;
         }
     }
 }

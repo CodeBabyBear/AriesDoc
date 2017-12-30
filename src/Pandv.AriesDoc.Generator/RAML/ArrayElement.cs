@@ -23,10 +23,15 @@ namespace Pandv.AriesDoc.Generator.RAML
             set
             {
                 depth = value;
-                foreach (var item in elements)
-                {
-                    item.Value.Depth = value + 1;
-                }
+                UpdateDepth(value + 1);
+            }
+        }
+
+        protected virtual void UpdateDepth(int depth)
+        {
+            foreach (var item in elements)
+            {
+                item.Value.Depth = depth;
             }
         }
 
@@ -37,13 +42,18 @@ namespace Pandv.AriesDoc.Generator.RAML
             if (!HasElements) return;
             if (WithKey)
             {
-                sb.Append(Key.Indent(Depth));
-                sb.AppendLine(":");
+                SerializeKey(sb);
             }
             foreach (var item in Elements)
             {
                 item.SerializeToString(sb);
             }
+        }
+
+        protected virtual void SerializeKey(StringBuilder sb)
+        {
+            sb.Append(Key.Indent(Depth));
+            sb.AppendLine(":");
         }
 
         public virtual void AddElement(IRAMLElement element)

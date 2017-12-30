@@ -13,7 +13,7 @@
         {
             WithKey = true;
             AddElement(new PropertyElement() { Key = KeyType });
-            AddElement(new PropertyElement() { Key = KeyRequired, Value = false });
+            AddElement(new PropertyElement() { Key = KeyRequired });
             AddElement(new PropertyElement() { Key = KeyDefault });
         }
     }

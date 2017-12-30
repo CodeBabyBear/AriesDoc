@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Pandv.AriesDoc.Generator.RAML;
-using System;
-using System.Reflection;
+using System.IO;
+using System.Linq;
 
 namespace Pandv.AriesDoc.Generator
 {
@@ -23,18 +24,29 @@ namespace Pandv.AriesDoc.Generator
             return options;
         }
 
-        public static IServiceCollection AddRAMLDocGenerator(this IServiceCollection services)
+        public static IServiceCollection AddRAMLDocGeneratorV08(this IServiceCollection services)
         {
             return services.AddApiExplorer()
-                .AddTransient<IMethodConverter, MethodConverter>()
-                .AddTransient<IParameterConverter, ParameterConverter>()
+                .AddTransient<IMethodConverter, MethodConverterV08>()
+                .AddTransient<IParameterConverter, ParameterConverterV08>()
                 .AddTransient<IDocGenerator, RAMLDocGenerator>();
         }
 
-        public static bool IsNullable(this Type type)
+        public static IWebHost GeneratorDoc(this IWebHost host, string docFolder)
         {
-            return type == typeof(string) || Nullable.GetUnderlyingType(type) != null ||
-                   (type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>));
+            var generator = host.Services.GetRequiredService<IDocGenerator>();
+            var index = 0;
+            generator.Generate()
+                .ToList()
+                .ForEach(i =>
+                {
+                    if (string.IsNullOrWhiteSpace(i.Title))
+                    {
+                        i.Title = $"API{index++}";
+                    }
+                    File.WriteAllText(Path.Combine(docFolder, $"{i.Title}.raml"), i.Serialize());
+                });
+            return host;
         }
     }
 }

@@ -13,16 +13,22 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
 namespace Example
 {
+    public class Student
+    {
+        public string Name { get; set; }
+    }
+
     public class Program
     {
         public string Name { get; set; }
 
+        public Student Student { get; set; }
+
         public static void Main(string[] args)
         {
-            var host = BuildWebHost(args);
-            var generator = host.Services.GetRequiredService<IDocGenerator>();
-            var a = generator.Generate().Select(i => i.Serialize()).ToArray();
-            //.Run();
+            BuildWebHost(args)
+                .GeneratorDoc(Directory.GetCurrentDirectory())
+                .Run();
         }
 
         public static IWebHost BuildWebHost(string[] args) =>
