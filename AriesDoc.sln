@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pandv.AriesDoc.Generator", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example", "test\Example\Example.csproj", "{5C7D58F4-7D72-4D76-B9ED-B4CBD5D61112}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotnet-aries-doc", "src\dotnet-aries-doc\dotnet-aries-doc.csproj", "{C8B3835B-B957-4D55-B977-2E4A528986F8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotnet-aries", "src\dotnet-aries-doc\dotnet-aries.csproj", "{C8B3835B-B957-4D55-B977-2E4A528986F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
