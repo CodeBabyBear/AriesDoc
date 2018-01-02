@@ -36,7 +36,8 @@ namespace Pandv.AriesDoc.Generator.RAML
                     mimeType.Schema.AddElement(parameterConverter.ConvertByType(responseType.Type));
                     response.Body.AddElement(mimeType);
                 }
-                method.Responses.AddElement(response);
+                if (response.Body.HasElements)
+                    method.Responses.AddElement(response);
             }
         }
 

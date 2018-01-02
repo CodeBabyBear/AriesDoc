@@ -36,7 +36,7 @@ namespace Pandv.AriesDoc.Generator
         {
             return services.AddApiExplorer()
                 .AddTransient<IMethodConverter, MethodConverterV08>()
-                .AddTransient<IParameterConverter, ParameterConverterV10>()
+                .AddSingleton<IParameterConverter, ParameterConverterV10>()
                 .AddTransient<IDocGenerator, RAMLDocGeneratorV10>();
         }
 

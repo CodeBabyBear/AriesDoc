@@ -45,6 +45,7 @@ namespace Pandv.AriesDoc.Generator.RAML
 
         public PropertyType()
         {
+            WithKey = true;
             AddElement(required);
             AddElement(type);
         }

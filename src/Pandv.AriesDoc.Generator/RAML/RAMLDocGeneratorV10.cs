@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using System.Linq;
 
 namespace Pandv.AriesDoc.Generator.RAML
 {
@@ -10,7 +11,7 @@ namespace Pandv.AriesDoc.Generator.RAML
 
         protected override void OtherHandle(RAMLDocument doc)
         {
-            doc.Version = RAMLDocument.RAMLVersion10;
+            doc.RAMLVersion = RAMLDocument.RAMLVersion10;
             var pc = parameterConverter as ParameterConverterV10;
             if (pc == null) return;
             foreach (var item in pc.GetOtherTypes())

@@ -20,12 +20,13 @@ namespace Pandv.AriesDoc.Generator.RAML
             ObjectType ot = null;
             if (IsDictionary(type))
             {
-                var et = type.GetGenericArguments()[1];
+                var k = type.GetGenericArguments()[0];
+                var v = type.GetGenericArguments()[1];
                 ot = new ObjectType()
                 {
-                    Key = et.Name + "Map",
-                    Type = ConvertParamterType(et)
+                    Type = $"<{ConvertParamterType(k)},{ConvertParamterType(v)}>"
                 };
+                ot.Key = "Map" + ot.Type;
             }
             else if (IsArrayOrEnumerable(type))
             {
@@ -70,6 +71,7 @@ namespace Pandv.AriesDoc.Generator.RAML
                     Key = item.Name,
                     //Required = 
                 };
+                ot.AddPropertyType(p);
             }
             return ot;
         }
@@ -77,7 +79,7 @@ namespace Pandv.AriesDoc.Generator.RAML
         private static IEnumerable<PropertyInfo> GetClassProperties(Type type)
         {
             var properties = type.GetProperties().Where(p => p.CanWrite);
-            if (type.GetTypeInfo().BaseType != null && type.GetTypeInfo().BaseType != typeof(Object))
+            if (type.GetTypeInfo().BaseType != null && type.GetTypeInfo().BaseType != typeof(object))
             {
                 var parentProperties = type.GetTypeInfo().BaseType.GetProperties().Where(p => p.CanWrite);
                 properties = properties.Where(p => parentProperties.All(x => x.Name != p.Name));

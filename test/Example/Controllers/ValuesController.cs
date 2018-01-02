@@ -29,7 +29,7 @@ namespace Example.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value, [FromBody]Program v1)
+        public void Post([FromBody]string value, [FromBody]Program v1, [FromBody]List<Program> v2, [FromBody]Dictionary<string,Program> v3)
         {
         }
 

@@ -23,7 +23,8 @@ namespace Pandv.AriesDoc.Generator.RAML
         //public List<IDictionary<string, string>> Schemas { get; set; }
         //public IDictionary<string, Parameter> BaseUriParameters { get; set; }
         //public IEnumerable<DocumentationItem> Documentation { get; set; }
-        public ArrayElement Types { get; private set; } = new ArrayElement() { Key = "types" };
+        public ArrayElement Types { get; private set; } = new ArrayElement() { Key = "types", WithKey = true };
+
         public ArrayElement Resources { get; private set; } = new ArrayElement() { Key = nameof(Resources) };
 
         //public IEnumerable<IDictionary<string, ResourceType>> ResourceTypes { get; set; }
