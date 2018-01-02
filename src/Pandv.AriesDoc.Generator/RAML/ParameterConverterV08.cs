@@ -9,7 +9,7 @@ namespace Pandv.AriesDoc.Generator.RAML
 {
     public class ParameterConverterV08 : IParameterConverter
     {
-        private IDictionary<Type, string> typeMap = new Dictionary<Type, string>();
+        protected IDictionary<Type, string> typeMap = new Dictionary<Type, string>();
         private JsonSchemaGenerator schemaGenerator = new JsonSchemaGenerator();
 
         public ParameterConverterV08()
@@ -69,9 +69,14 @@ namespace Pandv.AriesDoc.Generator.RAML
         {
             if (!typeMap.ContainsKey(type))
             {
-                typeMap[type] = schemaGenerator.Generate(type).ToString();
+                typeMap[type] = GenerateSchema(type);
             }
             return typeMap[type];
+        }
+
+        public virtual string GenerateSchema(Type type)
+        {
+            return schemaGenerator.Generate(type).ToString();
         }
 
         public Parameter ConvertByType(Type type)

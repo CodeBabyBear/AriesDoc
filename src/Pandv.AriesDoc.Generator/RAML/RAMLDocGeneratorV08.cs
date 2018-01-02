@@ -5,13 +5,13 @@ using System.Linq;
 
 namespace Pandv.AriesDoc.Generator.RAML
 {
-    public class RAMLDocGenerator : IDocGenerator
+    public class RAMLDocGeneratorV08 : IDocGenerator
     {
-        private readonly IApiDescriptionGroupCollectionProvider apiDescription;
-        private readonly IParameterConverter parameterConverter;
-        private readonly IMethodConverter methodConverter;
+        protected readonly IApiDescriptionGroupCollectionProvider apiDescription;
+        protected readonly IParameterConverter parameterConverter;
+        protected readonly IMethodConverter methodConverter;
 
-        public RAMLDocGenerator(IApiDescriptionGroupCollectionProvider apiDescription, IParameterConverter parameterConverter, IMethodConverter methodConverter)
+        public RAMLDocGeneratorV08(IApiDescriptionGroupCollectionProvider apiDescription, IParameterConverter parameterConverter, IMethodConverter methodConverter)
         {
             this.apiDescription = apiDescription;
             this.parameterConverter = parameterConverter;
@@ -41,7 +41,13 @@ namespace Pandv.AriesDoc.Generator.RAML
                 SetMethod(item, resource);
             }
 
+            OtherHandle(doc);
+
             return doc;
+        }
+
+        protected virtual void OtherHandle(RAMLDocument doc)
+        {
         }
 
         private void SetMethod(ApiDescription item, Resource resource)

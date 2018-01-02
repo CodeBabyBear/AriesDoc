@@ -8,8 +8,8 @@
     <ApplicationIcon />
     <StartupObject>Pandv.AriesDoc.Program</StartupObject>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <AssemblyVersion>0.0.1.1</AssemblyVersion>
-    <FileVersion>0.0.1.1</FileVersion>
+    <AssemblyVersion>0.0.1.2</AssemblyVersion>
+    <FileVersion>0.0.1.2</FileVersion>
     <PackageProjectUrl>https://github.com/CodeBabyBear/AriesDoc</PackageProjectUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/CodeBabyBear/AriesDoc/master/LICENSE</PackageLicenseUrl>
     <Copyright>Copyright @2018 Victor.X.Qu</Copyright>
@@ -17,8 +17,8 @@
     <Product>Pandv.AriesDoc.Generator</Product>
     <Company>Victor.X.Qu</Company>
     <Authors>Victor.X.Qu</Authors>
-    <Version>0.0.1.1</Version>
-    <PackageReleaseNotes>update beta version</PackageReleaseNotes>
+    <Version>0.0.1.2</Version>
+    <PackageReleaseNotes>simple support 1.0 raml</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

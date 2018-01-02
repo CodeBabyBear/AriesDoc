@@ -29,7 +29,15 @@ namespace Pandv.AriesDoc.Generator
             return services.AddApiExplorer()
                 .AddTransient<IMethodConverter, MethodConverterV08>()
                 .AddTransient<IParameterConverter, ParameterConverterV08>()
-                .AddTransient<IDocGenerator, RAMLDocGenerator>();
+                .AddTransient<IDocGenerator, RAMLDocGeneratorV08>();
+        }
+
+        public static IServiceCollection AddRAMLDocGeneratorV10(this IServiceCollection services)
+        {
+            return services.AddApiExplorer()
+                .AddTransient<IMethodConverter, MethodConverterV08>()
+                .AddTransient<IParameterConverter, ParameterConverterV10>()
+                .AddTransient<IDocGenerator, RAMLDocGeneratorV10>();
         }
 
         public static IWebHost GeneratorDoc(this IWebHost host, string docFolder, string baseUri = "")

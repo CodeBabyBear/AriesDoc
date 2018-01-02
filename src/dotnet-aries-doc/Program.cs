@@ -43,6 +43,9 @@ namespace Pandv.AriesDoc
                     var baseUrl = command.Option(
                         "-b", "The base url.", CommandOptionType.SingleValue);
 
+                    var version = command.Option(
+                        "-v", "The raml version.", CommandOptionType.SingleValue);
+
                     command.OnExecute(() =>
                     {
                         if (string.IsNullOrWhiteSpace(dllDirectory.Value())
@@ -55,7 +58,7 @@ namespace Pandv.AriesDoc
 
                         Generate(dllDirectory.Value(), directory.Value(),
                             startupName.HasValue() ? startupName.Value() : "Startup",
-                            baseUrl.Value());
+                            baseUrl.Value(), version.Value());
                         Console.WriteLine("Aries doc generate Done.");
                         return 0;
                     });
@@ -76,7 +79,8 @@ namespace Pandv.AriesDoc
             }
         }
 
-        public static void Generate(string dllDirectory, string docDirectory, string startupName, string baseUri)
+        public static void Generate(string dllDirectory, string docDirectory, string startupName,
+            string baseUri, string version)
         {
             var assemblies = Directory.EnumerateFiles(dllDirectory)
                 .Where(i => i.EndsWith(".dll"))
@@ -89,7 +93,10 @@ namespace Pandv.AriesDoc
                 .ConfigureServices(services =>
                 {
                     services.AddMvcCore(o => o.SetApiExplorerVisible());
-                    services.AddRAMLDocGeneratorV08();
+                    if (version == "0.8")
+                        services.AddRAMLDocGeneratorV08();
+                    else
+                        services.AddRAMLDocGeneratorV10();
                 })
                 .UseUrls(baseUri)
                 .Build()
