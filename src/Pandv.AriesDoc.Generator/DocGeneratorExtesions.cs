@@ -32,7 +32,7 @@ namespace Pandv.AriesDoc.Generator
                 .AddTransient<IDocGenerator, RAMLDocGenerator>();
         }
 
-        public static IWebHost GeneratorDoc(this IWebHost host, string docFolder)
+        public static IWebHost GeneratorDoc(this IWebHost host, string docFolder, string baseUri = "")
         {
             var generator = host.Services.GetRequiredService<IDocGenerator>();
             var index = 0;
@@ -43,6 +43,7 @@ namespace Pandv.AriesDoc.Generator
                     if (string.IsNullOrWhiteSpace(i.Title))
                     {
                         i.Title = $"API{index++}";
+                        i.BaseUri = baseUri;
                     }
                     File.WriteAllText(Path.Combine(docFolder, $"{i.Title}.raml"), i.Serialize());
                 });
