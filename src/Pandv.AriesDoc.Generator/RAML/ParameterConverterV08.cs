@@ -14,7 +14,10 @@ namespace Pandv.AriesDoc.Generator.RAML
 
         public ParameterConverterV08()
         {
-            typeMap.Add(typeof(string), "string");
+            var str = "string";
+            typeMap.Add(typeof(string), str);
+            typeMap.Add(typeof(Guid), str);
+            typeMap.Add(typeof(Guid?), str);
             var integer = "integer";
             typeMap.Add(typeof(int), integer);
             typeMap.Add(typeof(int?), integer);
@@ -37,7 +40,7 @@ namespace Pandv.AriesDoc.Generator.RAML
             typeMap.Add(typeof(DateTime?), date);
         }
 
-        public IRAMLElement Convert(ApiParameterDescription paramter)
+        public Parameter Convert(ApiParameterDescription paramter)
         {
             return new Parameter()
             {
@@ -71,7 +74,7 @@ namespace Pandv.AriesDoc.Generator.RAML
             return typeMap[type];
         }
 
-        public IRAMLElement ConvertByType(Type type)
+        public Parameter ConvertByType(Type type)
         {
             var res = new Parameter()
             {

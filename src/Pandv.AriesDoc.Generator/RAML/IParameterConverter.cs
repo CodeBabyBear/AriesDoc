@@ -5,8 +5,8 @@ namespace Pandv.AriesDoc.Generator.RAML
 {
     public interface IParameterConverter
     {
-        IRAMLElement Convert(ApiParameterDescription paramter);
+        Parameter Convert(ApiParameterDescription paramter);
 
-        IRAMLElement ConvertByType(Type type);
+        Parameter ConvertByType(Type type);
     }
 }
