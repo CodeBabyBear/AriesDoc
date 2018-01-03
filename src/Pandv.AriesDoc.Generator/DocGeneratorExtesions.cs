@@ -35,7 +35,7 @@ namespace Pandv.AriesDoc.Generator
         public static IServiceCollection AddRAMLDocGeneratorV10(this IServiceCollection services)
         {
             return services.AddApiExplorer()
-                .AddTransient<IMethodConverter, MethodConverterV08>()
+                .AddTransient<IMethodConverter, MethodConverterV10>()
                 .AddSingleton<IParameterConverter, ParameterConverterV10>()
                 .AddTransient<IDocGenerator, RAMLDocGeneratorV10>();
         }

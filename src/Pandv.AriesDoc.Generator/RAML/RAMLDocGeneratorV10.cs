@@ -14,7 +14,9 @@ namespace Pandv.AriesDoc.Generator.RAML
             doc.RAMLVersion = RAMLDocument.RAMLVersion10;
             var pc = parameterConverter as ParameterConverterV10;
             if (pc == null) return;
-            foreach (var item in pc.GetOtherTypes())
+            foreach (var item in pc.GetOtherTypes().GroupBy(i=> i.Key)
+                                  .Select(g => g.First())
+                                  .ToList())
             {
                 doc.Types.AddElement(item);
             }

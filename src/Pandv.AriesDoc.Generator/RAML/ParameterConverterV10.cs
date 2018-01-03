@@ -8,11 +8,14 @@ namespace Pandv.AriesDoc.Generator.RAML
 {
     public class ParameterConverterV10 : ParameterConverterV08
     {
-        protected IDictionary<Type, ObjectType> ramlTypes = new Dictionary<Type, ObjectType>();
+        protected IDictionary<string, ObjectType> ramlTypes = new Dictionary<string, ObjectType>();
 
         public ParameterConverterV10() : base()
         {
-            typeMap.Add(typeof(object), "object");
+            var date = "datetime";
+            typeMap[typeof(DateTime).FullName] = date;
+            typeMap[typeof(DateTime?).FullName] = date;
+            typeMap.Add(typeof(object).FullName, "object");
         }
 
         public override string GenerateSchema(Type type)
@@ -20,22 +23,24 @@ namespace Pandv.AriesDoc.Generator.RAML
             ObjectType ot = null;
             if (IsDictionary(type))
             {
-                var k = type.GetGenericArguments()[0];
-                var v = type.GetGenericArguments()[1];
+                var k = ConvertParamterType(type.GetGenericArguments()[0]);
+                var v = ConvertParamterType(type.GetGenericArguments()[1]);
                 ot = new ObjectType()
                 {
-                    Type = $"<{ConvertParamterType(k)},{ConvertParamterType(v)}>"
+                    Key = $"{k}_{v}_Map",
+                    Type = $"<{k},{v}>Map"
                 };
-                ot.Key = "Map" + ot.Type;
+                AddType(type, ot);
             }
             else if (IsArrayOrEnumerable(type))
             {
-                var et = GetElementType(type);
+                var et = ConvertParamterType(GetElementType(type));
                 ot = new ObjectType()
                 {
-                    Type = ConvertParamterType(et)
+                    Type = et + "[]",
+                    Key = et + "_Array"
                 };
-                ot.Key = ot.Type + "[]";
+                AddType(type, ot);
             }
             else
             {
@@ -44,8 +49,6 @@ namespace Pandv.AriesDoc.Generator.RAML
 
             if (ot != null)
             {
-                ramlTypes.Add(type, ot);
-                ot.Key = ot.Key.Replace("`", string.Empty);
                 return ot.Key;
             }
             else
@@ -54,10 +57,22 @@ namespace Pandv.AriesDoc.Generator.RAML
             }
         }
 
+        private void AddType(Type type, ObjectType ot)
+        {
+            AddType(type.FullName, ot);
+        }
+
+        internal void AddType(string key, ObjectType ot)
+        {
+            ramlTypes.Add(key, ot);
+            ot.Key = ot.Key.Replace("`", string.Empty);
+            typeMap[key] = ot.Key;
+        }
+
         private ObjectType GetObject(Type type)
         {
             var ot = new ObjectType() { Key = type.Name };
-
+            AddType(type, ot);
             if (type.GetTypeInfo().BaseType != null)
             {
                 ot.Type = ConvertParamterType(type.GetTypeInfo().BaseType);
