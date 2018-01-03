@@ -8,6 +8,7 @@ namespace Pandv.AriesDoc.Generator.RAML
     public class ArrayElement : IRAMLElement
     {
         private int depth;
+        private int subOrder;
         protected IDictionary<string, IRAMLElement> elements = new Dictionary<string, IRAMLElement>(StringComparer.OrdinalIgnoreCase);
 
         public string Key { get; set; }
@@ -58,7 +59,7 @@ namespace Pandv.AriesDoc.Generator.RAML
 
         public virtual void AddElement(IRAMLElement element)
         {
-            element.Order = Order++;
+            element.Order = subOrder++;
             element.Depth = Depth + 1;
             elements.Add(element.Key, element);
         }
