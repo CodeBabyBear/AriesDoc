@@ -9,7 +9,9 @@ namespace Pandv.AriesDoc.Generator.RAML
         private PropertyElement type = new PropertyElement() { Key = "type" };
         public string Type { get => type.Value.ToString(); set => type.Value = value.ToString(); }
 
-        public ArrayElement Properties = new ArrayElement() { Key = "properties", WithKey = true };
+        public ArrayElement Properties { get; } = new ArrayElement() { Key = "properties", WithKey = true };
+
+        public ArrayElement Enum { get; } = new ArrayElement() { Key = "enum", WithKey = true };
 
         //public int? MinProperties { get; set; }
 
@@ -28,6 +30,7 @@ namespace Pandv.AriesDoc.Generator.RAML
             WithKey = true;
             AddElement(type);
             AddElement(Properties);
+            AddElement(Enum);
         }
 
         public void AddPropertyType(PropertyType type)

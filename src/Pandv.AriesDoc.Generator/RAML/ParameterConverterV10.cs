@@ -23,24 +23,15 @@ namespace Pandv.AriesDoc.Generator.RAML
             ObjectType ot = null;
             if (IsDictionary(type))
             {
-                var k = ConvertParamterType(type.GetGenericArguments()[0]);
-                var v = ConvertParamterType(type.GetGenericArguments()[1]);
-                ot = new ObjectType()
-                {
-                    Key = $"{k}_{v}_Map",
-                    Type = $"<{k},{v}>Map"
-                };
-                AddType(type, ot);
+                ot = GetMap(type);
             }
             else if (IsArrayOrEnumerable(type))
             {
-                var et = ConvertParamterType(GetElementType(type));
-                ot = new ObjectType()
-                {
-                    Type = et + "[]",
-                    Key = et + "_Array"
-                };
-                AddType(type, ot);
+                ot = GetArray(type);
+            }
+            else if (type.GetTypeInfo().IsEnum)
+            {
+                ot = GetEnum(type);
             }
             else
             {
@@ -55,6 +46,59 @@ namespace Pandv.AriesDoc.Generator.RAML
             {
                 return string.Empty;
             }
+        }
+
+        private ObjectType GetMap(Type type)
+        {
+            ObjectType ot;
+            var k = ConvertParamterType(type.GetGenericArguments()[0]);
+            var v = ConvertParamterType(type.GetGenericArguments()[1]);
+            ot = new ObjectType()
+            {
+                Key = $"{k}_{v}_Map",
+                Type = $"object"
+            };
+            ot.AddPropertyType(new PropertyType()
+            {
+                Type = k,
+                Key = "Key",
+            });
+            ot.AddPropertyType(new PropertyType()
+            {
+                Type = v,
+                Key = "Value",
+            });
+            AddType(type, ot);
+            return ot;
+        }
+
+        private ObjectType GetArray(Type type)
+        {
+            ObjectType ot;
+            var et = ConvertParamterType(GetElementType(type));
+            ot = new ObjectType()
+            {
+                Type = et + "[]",
+                Key = et + "_Array"
+            };
+            AddType(type, ot);
+            return ot;
+        }
+
+        private ObjectType GetEnum(Type type)
+        {
+            ObjectType ot = new ObjectType()
+            {
+                Key = type.Name + "Enum",
+                Type = "string"
+            };
+            foreach (var item in type.GetEnumNames())
+            {
+                ot.Enum.AddElement(new StringElement() { Key = $"- {item}", Value = string.Empty });
+            }
+
+            AddType(type, ot);
+            return ot;
         }
 
         private void AddType(Type type, ObjectType ot)
@@ -84,7 +128,7 @@ namespace Pandv.AriesDoc.Generator.RAML
                 {
                     Type = ConvertParamterType(item.PropertyType),
                     Key = item.Name,
-                    //Required = 
+                    //Required =
                 };
                 ot.AddPropertyType(p);
             }

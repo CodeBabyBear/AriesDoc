@@ -3,6 +3,13 @@ using System.Collections.Generic;
 
 namespace Example.Controllers
 {
+    public enum Test
+    {
+        None,
+        A,
+        B
+    }
+
     [ApiExplorerSettings(GroupName = "Values")]
     [Route("api/[controller]")]
     public class ValuesController : Controller
@@ -29,7 +36,7 @@ namespace Example.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value, [FromBody]Program v1, [FromBody]List<Program> v2, [FromBody]Dictionary<string,Program> v3)
+        public void Post([FromBody]string value, [FromBody]Program v1, [FromBody]List<Program> v2, [FromBody]Dictionary<string,Program> v3, [FromBody] Test v4)
         {
         }
 
