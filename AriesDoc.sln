@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pandv.AriesDoc.Generator", "src\Pandv.AriesDoc.Generator\Pandv.AriesDoc.Generator.csproj", "{F5CCA864-3362-4075-829A-724B4408E79B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pandv.AriesDoc.Generator", "src\Pandv.AriesDoc.Generator\Pandv.AriesDoc.Generator.csproj", "{F5CCA864-3362-4075-829A-724B4408E79B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pandv.AriesDoc.Cli", "src\Pandv.AriesDoc.Cli\Pandv.AriesDoc.Cli.csproj", "{88392B95-8857-43FB-8E9C-8F842BB1CD56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example", "test\Example\Example.csproj", "{5C7D58F4-7D72-4D76-B9ED-B4CBD5D61112}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotnet-aries", "src\dotnet-aries-doc\dotnet-aries.csproj", "{C8B3835B-B957-4D55-B977-2E4A528986F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +19,14 @@ Global
 		{F5CCA864-3362-4075-829A-724B4408E79B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5CCA864-3362-4075-829A-724B4408E79B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5CCA864-3362-4075-829A-724B4408E79B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{88392B95-8857-43FB-8E9C-8F842BB1CD56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{88392B95-8857-43FB-8E9C-8F842BB1CD56}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{88392B95-8857-43FB-8E9C-8F842BB1CD56}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{88392B95-8857-43FB-8E9C-8F842BB1CD56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C7D58F4-7D72-4D76-B9ED-B4CBD5D61112}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C7D58F4-7D72-4D76-B9ED-B4CBD5D61112}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C7D58F4-7D72-4D76-B9ED-B4CBD5D61112}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C7D58F4-7D72-4D76-B9ED-B4CBD5D61112}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8B3835B-B957-4D55-B977-2E4A528986F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8B3835B-B957-4D55-B977-2E4A528986F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8B3835B-B957-4D55-B977-2E4A528986F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8B3835B-B957-4D55-B977-2E4A528986F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
