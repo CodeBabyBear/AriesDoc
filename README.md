@@ -6,8 +6,9 @@ It base on ```Microsoft.AspNetCore.Mvc.ApiExplorer```.
 
 
 ## Quick start
+<hr>
 
-## Add configuration
+### Add configuration
 1. Found your project and right click mouse, choose Edit csproj.
 2. Add below configuration,when you add pelase note <b>DotNetCliToolReference</b> is what we needed rather than <b>PackageReference</b>.
 ```
@@ -18,7 +19,7 @@ It base on ```Microsoft.AspNetCore.Mvc.ApiExplorer```.
 ```
 This is a necessary step.
 
-## How to use 
+### How to use 
 In this step we hypothesis you had add conguration in your csproj. It's easy for us to use this tool.<br>
 - Open the terminal, here we take Windows as an example. Founding the base path of your project.<br>
 Run the command
@@ -35,7 +36,7 @@ Aries doc generate Done
 ```
 Finished!
 
-## Parameters 
+### Parameters 
  - -t required! You should gave the path where Aries to exported API Doc.
  - -f required! You should point to where the <b>publish</b> folder is.
  - -b required! The base path of your API. Actually, it is not a necessary field, but we recommend it. 
