@@ -2,10 +2,15 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.CommandLineUtils;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyModel;
+using Microsoft.Extensions.DependencyModel.Resolution;
+using Newtonsoft.Json;
 using Pandv.AriesDoc.Generator;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Loader;
 
 namespace Pandv.AriesDoc
@@ -31,6 +36,9 @@ namespace Pandv.AriesDoc
                 app.Command("doc", command =>
                 {
                     command.Description = app.Description;
+                    var config = command.Option(
+                        "-c", "The config file.", CommandOptionType.SingleValue);
+
                     var directory = command.Option(
                         "-t", "The raml doc files where to save.", CommandOptionType.SingleValue);
 
@@ -48,17 +56,36 @@ namespace Pandv.AriesDoc
 
                     command.OnExecute(() =>
                     {
-                        if (string.IsNullOrWhiteSpace(dllDirectory.Value())
-                            || string.IsNullOrWhiteSpace(directory.Value()))
+                        var docConfig = !string.IsNullOrWhiteSpace(config.Value())
+                         ? JsonConvert.DeserializeObject<DocConfig>(File.ReadAllText(config.Value()))
+                         : new DocConfig()
+                         {
+                             RamlVersion = version.Value(),
+                             StartupClassName = startupName.HasValue() ? startupName.Value() : "Startup",
+                             BaseUrl = baseUrl.Value(),
+                             DocDirectory = directory.Value(),
+                             PublishDllDirectory = dllDirectory.Value(),
+                             IsRelativePath = false
+                         };
+
+                        if (string.IsNullOrWhiteSpace(docConfig.PublishDllDirectory)
+                            || string.IsNullOrWhiteSpace(docConfig.DocDirectory))
                         {
                             Console.WriteLine("Invalid doc directory or dllDirectory");
                             app.ShowHelp();
                             return 2;
                         }
 
-                        Generate(dllDirectory.Value(), directory.Value(),
-                            startupName.HasValue() ? startupName.Value() : "Startup",
-                            baseUrl.Value(), version.Value());
+                        if (docConfig.IsRelativePath)
+                        {
+                            var current = Directory.GetCurrentDirectory();
+                            docConfig.PublishDllDirectory = Path.Combine(current, docConfig.PublishDllDirectory);
+                            docConfig.DocDirectory = Path.Combine(current, docConfig.DocDirectory);
+                        }
+
+                        Generate(docConfig.PublishDllDirectory, docConfig.DocDirectory,
+                            docConfig.StartupClassName,
+                            docConfig.BaseUrl, docConfig.RamlVersion);
                         Console.WriteLine("Aries doc generate Done.");
                         return 0;
                     });
@@ -84,8 +111,10 @@ namespace Pandv.AriesDoc
         {
             var assemblies = Directory.EnumerateFiles(dllDirectory)
                 .Where(i => i.EndsWith(".dll"))
-                .Select(i => AssemblyLoadContext.Default.LoadFromAssemblyPath(i))
+                //.Select(i => AssemblyLoadContext.Default.LoadFromAssemblyPath(i))
+                .Select(i => new AssemblyResolver(i).Assembly)
                 .ToArray();
+            assemblies.ToList().ForEach(i => DependencyContext.Load(i));
             var startupType = assemblies.SelectMany(i => i.ExportedTypes)
                 .FirstOrDefault(x => string.Equals(x.Name, startupName));
             var webHostBuilder = WebHost.CreateDefaultBuilder(new string[0])
@@ -101,6 +130,68 @@ namespace Pandv.AriesDoc
                 .UseUrls(baseUri)
                 .Build()
                 .GeneratorDoc(docDirectory, baseUri);
+        }
+    }
+
+    internal sealed class AssemblyResolver : IDisposable
+    {
+        private readonly ICompilationAssemblyResolver assemblyResolver;
+        private readonly DependencyContext dependencyContext;
+        private readonly AssemblyLoadContext loadContext;
+
+        public AssemblyResolver(string path)
+        {
+            this.Assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(path);
+            this.dependencyContext = DependencyContext.Load(this.Assembly);
+
+            this.assemblyResolver = new CompositeCompilationAssemblyResolver
+                                    (new ICompilationAssemblyResolver[]
+            {
+            new AppBaseCompilationAssemblyResolver(Path.GetDirectoryName(path)),
+            new ReferenceAssemblyPathResolver(),
+            new PackageCompilationAssemblyResolver()
+            });
+
+            this.loadContext = AssemblyLoadContext.GetLoadContext(this.Assembly);
+            this.loadContext.Resolving += OnResolving;
+        }
+
+        public Assembly Assembly { get; }
+
+        public void Dispose()
+        {
+            this.loadContext.Resolving -= this.OnResolving;
+        }
+
+        private Assembly OnResolving(AssemblyLoadContext context, AssemblyName name)
+        {
+            bool NamesMatch(RuntimeLibrary runtime)
+            {
+                return string.Equals(runtime.Name, name.Name, StringComparison.OrdinalIgnoreCase);
+            }
+
+            RuntimeLibrary library =
+                this.dependencyContext.RuntimeLibraries.FirstOrDefault(NamesMatch);
+            if (library != null)
+            {
+                var wrapper = new CompilationLibrary(
+                    library.Type,
+                    library.Name,
+                    library.Version,
+                    library.Hash,
+                    library.RuntimeAssemblyGroups.SelectMany(g => g.AssetPaths),
+                    library.Dependencies,
+                    library.Serviceable);
+
+                var assemblies = new List<string>();
+                this.assemblyResolver.TryResolveAssemblyPaths(wrapper, assemblies);
+                if (assemblies.Count > 0)
+                {
+                    return this.loadContext.LoadFromAssemblyPath(assemblies[0]);
+                }
+            }
+
+            return null;
         }
     }
 }
