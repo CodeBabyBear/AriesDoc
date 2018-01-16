@@ -51,8 +51,8 @@ namespace Pandv.AriesDoc.Generator
                     if (string.IsNullOrWhiteSpace(i.Title))
                     {
                         i.Title = $"API{index++}";
-                        i.BaseUri = baseUri;
                     }
+                    i.BaseUri = baseUri;
                     File.WriteAllText(Path.Combine(docFolder, $"{i.Title}.raml"), i.Serialize());
                 });
             return host;
