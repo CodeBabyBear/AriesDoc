@@ -1,5 +1,7 @@
 # AriesDoc
 
+[![Build status](https://ci.appveyor.com/api/projects/status/dcpgxu6ba8swt3yv/branch/master?svg=true)](https://ci.appveyor.com/project/fs7744/ariesdoc/branch/master)
+
 AriesDoc is help we generate raml doc file form asp.net core.
 
 It base on ```Microsoft.AspNetCore.Mvc.ApiExplorer```.
