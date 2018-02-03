@@ -1,0 +1,9 @@
+﻿{
+  "RamlVersion": "1.0",
+  "StartupClassName": "Startup",
+  "BaseUrl": "http://www.test.com",
+  "DocDirectory": "bin\\Release\\netcoreapp2.0\\publish",
+  "PublishDllDirectory": "bin\\Release\\netcoreapp2.0\\publish",
+  "IsRelativePath": true,
+  "XmlCommentsFile": "bin\\Release\\netcoreapp2.0\\publish\\doc.xml"
+}

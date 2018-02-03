@@ -57,5 +57,10 @@ namespace Pandv.AriesDoc.Generator
                 });
             return host;
         }
+
+        public static IServiceCollection AddXmlComments(this IServiceCollection services, string xmlCommentsFile)
+        {
+            return services.AddSingleton<IComments>(new XmlComments(xmlCommentsFile));
+        }
     }
 }

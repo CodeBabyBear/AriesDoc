@@ -49,6 +49,9 @@ namespace Pandv.AriesDoc
                     var version = command.Option(
                         "-v", "The raml version.", CommandOptionType.SingleValue);
 
+                    var xml = command.Option(
+                        "-x", "The xml comments file.", CommandOptionType.SingleValue);
+
                     command.OnExecute(() =>
                     {
                         var docConfig = !string.IsNullOrWhiteSpace(config.Value())
@@ -60,7 +63,8 @@ namespace Pandv.AriesDoc
                              BaseUrl = baseUrl.Value(),
                              DocDirectory = directory.Value(),
                              PublishDllDirectory = dllDirectory.Value(),
-                             IsRelativePath = false
+                             IsRelativePath = false,
+                             XmlCommentsFile = xml.Value()
                          };
 
                         if (string.IsNullOrWhiteSpace(docConfig.PublishDllDirectory)
@@ -77,10 +81,7 @@ namespace Pandv.AriesDoc
                             docConfig.PublishDllDirectory = Path.Combine(current, docConfig.PublishDllDirectory);
                             docConfig.DocDirectory = Path.Combine(current, docConfig.DocDirectory);
                         }
-
-                        Generate(docConfig.PublishDllDirectory, docConfig.DocDirectory,
-                            docConfig.StartupClassName,
-                            docConfig.BaseUrl, docConfig.RamlVersion);
+                        Generate(docConfig);
                         Console.WriteLine("Aries doc generate Done.");
                         return 0;
                     });
@@ -101,25 +102,25 @@ namespace Pandv.AriesDoc
             }
         }
 
-        public static void Generate(string dllDirectory, string docDirectory, string startupName,
-            string baseUri, string version)
+        private static void Generate(DocConfig docConfig)
         {
-            var startupType = new AssemblyResolver(dllDirectory).Assemblies
+            var startupType = new AssemblyResolver(docConfig.PublishDllDirectory).Assemblies
                 .SelectMany(i => i.ExportedTypes)
-                .FirstOrDefault(x => string.Equals(x.Name, startupName));
+                .FirstOrDefault(x => string.Equals(x.Name, docConfig.StartupClassName));
             var webHostBuilder = WebHost.CreateDefaultBuilder(new string[0])
                 .UseStartup(startupType)
                 .ConfigureServices(services =>
                 {
                     services.AddMvcCore(o => o.SetApiExplorerVisible());
-                    if (version == "0.8")
+                    if (docConfig.RamlVersion == "0.8")
                         services.AddRAMLDocGeneratorV08();
                     else
                         services.AddRAMLDocGeneratorV10();
+                    services.AddXmlComments(docConfig.XmlCommentsFile);
                 })
-                .UseUrls(baseUri)
+                .UseUrls(docConfig.BaseUrl)
                 .Build()
-                .GeneratorDoc(docDirectory, baseUri);
+                .GeneratorDoc(docConfig.DocDirectory, docConfig.BaseUrl);
         }
     }
 }
