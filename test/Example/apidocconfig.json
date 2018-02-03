@@ -5,5 +5,5 @@
   "DocDirectory": "bin\\Release\\netcoreapp2.0\\publish",
   "PublishDllDirectory": "bin\\Release\\netcoreapp2.0\\publish",
   "IsRelativePath": true,
-  "XmlCommentsFile": "bin\\Release\\netcoreapp2.0\\publish\\doc.xml"
+  "XmlCommentsFile": "bin\\Release\\netcoreapp2.0\\doc.xml"
 }
