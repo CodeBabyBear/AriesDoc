@@ -8,7 +8,7 @@ namespace Pandv.AriesDoc.Generator.RAML
     {
         private PropertyElement type = new PropertyElement() { Key = "type" };
         public string Type { get => type.Value.ToString(); set => type.Value = value.ToString(); }
-
+        public PropertyElement Description { get; } = new PropertyElement() { Key = "description" };
         public ArrayElement Properties { get; } = new ArrayElement() { Key = "properties", WithKey = true };
 
         public ArrayElement Enum { get; } = new ArrayElement() { Key = "enum", WithKey = true };
@@ -29,6 +29,7 @@ namespace Pandv.AriesDoc.Generator.RAML
         {
             WithKey = true;
             AddElement(type);
+            AddElement(Description);
             AddElement(Properties);
             AddElement(Enum);
         }
@@ -44,6 +45,7 @@ namespace Pandv.AriesDoc.Generator.RAML
         private PropertyElement required = new PropertyElement() { Key = "required" };
         public bool Required { get => bool.Parse(required.Value.ToString()); set => required.Value = value.ToString().ToLower(); }
         private PropertyElement type = new PropertyElement() { Key = "type" };
+        public PropertyElement Description { get; } = new PropertyElement() { Key = "description" };
         public string Type { get => type.Value.ToString(); set => type.Value = value.ToString(); }
 
         public PropertyType()
@@ -51,6 +53,7 @@ namespace Pandv.AriesDoc.Generator.RAML
             WithKey = true;
             AddElement(required);
             AddElement(type);
+            AddElement(Description);
         }
     }
 

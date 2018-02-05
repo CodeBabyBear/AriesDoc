@@ -8,5 +8,6 @@
         public string DocDirectory { get; set; }
         public string PublishDllDirectory { get; set; }
         public bool IsRelativePath { get; set; }
+        public string XmlCommentsFile { get; set; }
     }
 }

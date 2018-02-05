@@ -5,7 +5,8 @@ namespace Pandv.AriesDoc.Generator.RAML
 {
     public class RAMLDocGeneratorV10 : RAMLDocGeneratorV08
     {
-        public RAMLDocGeneratorV10(IApiDescriptionGroupCollectionProvider apiDescription, IParameterConverter parameterConverter, IMethodConverter methodConverter) : base(apiDescription, parameterConverter, methodConverter)
+        public RAMLDocGeneratorV10(IApiDescriptionGroupCollectionProvider apiDescription, IParameterConverter parameterConverter, IMethodConverter methodConverter, IComments comments)
+            : base(apiDescription, parameterConverter, methodConverter, comments)
         {
         }
 

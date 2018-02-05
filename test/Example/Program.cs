@@ -5,8 +5,16 @@ using System.IO;
 
 namespace Example
 {
+    /// <summary>
+    /// sdadas
+    /// dadasda
+    /// </summary>
     public class Student
     {
+        /// <summary>
+        /// asDd
+        /// sADA
+        /// </summary>
         public string Name { get; set; }
     }
 

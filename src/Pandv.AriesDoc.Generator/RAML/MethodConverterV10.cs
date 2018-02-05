@@ -5,7 +5,7 @@ namespace Pandv.AriesDoc.Generator.RAML
 {
     public class MethodConverterV10 : MethodConverterV08
     {
-        public MethodConverterV10(IParameterConverter parameterConverter) : base(parameterConverter)
+        public MethodConverterV10(IParameterConverter parameterConverter, IComments comments) : base(parameterConverter, comments)
         {
         }
 

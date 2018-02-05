@@ -31,6 +31,8 @@ dotnet publish -c Release
 - Run aries command to export Document
 ```
 dotnet aries doc -t D:\AriesDoc\ -f D:\Example\bin\Release\netcoreapp2.0\publish -b http://localhost:63298
+-- or 
+dotnet aries doc -c apidocconfig.json
 ```
 - Export success will output
 ```
@@ -44,6 +46,23 @@ Finished!
  - -b required! The base path of your API. Actually, it is not a necessary field, but we recommend it. 
  - -s Optional! The start class name of your project. if not given, it would use the default field <b>StartUp</b>
  - -v Optional! The version number of raml. If not given, it would use the default value <b>1.0</b>.
+ - -x Optional! The xml comments file.
+ - -c Optional! The config file.
+
+ ### Config file example
+
+``` json
+{
+  "RamlVersion": "1.0",
+  "StartupClassName": "Startup",
+  "BaseUrl": "http://www.test.com",
+  "DocDirectory": "bin\\Release\\netcoreapp2.0\\publish",
+  "PublishDllDirectory": "bin\\Release\\netcoreapp2.0\\publish",
+  "IsRelativePath": true,
+  "XmlCommentsFile": "bin\\Release\\netcoreapp2.0\\doc.xml"
+}
+```
+
 
 The example project is here : https://github.com/CodeBabyBear/AriesDoc/tree/master/test/Example
 

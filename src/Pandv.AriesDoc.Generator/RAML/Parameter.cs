@@ -8,10 +8,12 @@
         public string ParameterType { get => elements[KeyType].Value.ToString(); set => elements[KeyType].Value = value; }
         public string Required { get => elements[KeyRequired].Value.ToString(); set => elements[KeyRequired].Value = value; }
         public string Default { get => elements[KeyDefault].Value.ToString(); set => elements[KeyDefault].Value = value; }
+        public PropertyElement Description { get; } = new PropertyElement() { Key = "description" };
 
         public Parameter()
         {
             WithKey = true;
+            AddElement(Description);
             AddElement(new PropertyElement() { Key = KeyType });
             AddElement(new PropertyElement() { Key = KeyRequired });
             AddElement(new PropertyElement() { Key = KeyDefault });
