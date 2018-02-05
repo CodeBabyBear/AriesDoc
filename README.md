@@ -1,59 +1,49 @@
 # AriesDoc
 
+[![Build status](https://ci.appveyor.com/api/projects/status/dcpgxu6ba8swt3yv/branch/master?svg=true)](https://ci.appveyor.com/project/fs7744/ariesdoc/branch/master)
+
 AriesDoc is help we generate raml doc file form asp.net core.
 
 It base on ```Microsoft.AspNetCore.Mvc.ApiExplorer```.
 
 
 ## Quick start
+<hr>
 
-### Install package
-
-* Package Manager
-
+### Add configuration
+1. Found your project and right click mouse, choose Edit csproj.
+2. Add below configuration,when you add pelase note <b>DotNetCliToolReference</b> is what we needed rather than <b>PackageReference</b>.
 ```
-Install-Package Pandv.AriesDoc.Generator -Version 0.0.1
+<ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
+    <DotNetCliToolReference Include="dotnet-aries" Version="*" /><!--add this-->
+</ItemGroup>
 ```
-* .NET CLI
+This is a necessary step.
 
+### How to use 
+In this step we hypothesis you had add conguration in your csproj. It's easy for us to use this tool.<br>
+- Open the terminal, here we take Windows as an example. Founding the base path of your project.<br>
+Run the command
 ```
-dotnet add package Pandv.AriesDoc.Generator --version 0.0.1
+dotnet publish -c Release
 ```
-* Paket CLI
-
+- Run aries command to export Document
 ```
-paket add Pandv.AriesDoc.Generator --version 0.0.1
+dotnet aries doc -t D:\AriesDoc\ -f D:\Example\bin\Release\netcoreapp2.0\publish -b http://localhost:63298
 ```
-
-Nuget : https://www.nuget.org/packages/Pandv.AriesDoc.Generator/0.0.1
-
-### Simple use example
-
-1. set the services
-
-``` csharp
-public class Startup
-{
-    public void ConfigureServices(IServiceCollection services)
-    {
-        services.AddMvc(o => o.SetApiExplorerVisible());
-        services.AddRAMLDocGeneratorV08();
-    }
-}
+- Export success will output
 ```
-
-2. call the generate function
-
-``` csharp
-public class Program
-{
-    public static void Main(string[] args)
-    {
-        BuildWebHost(args)
-            .GeneratorDoc(Directory.GetCurrentDirectory());
-    }
-}
+Aries doc generate Done
 ```
+Finished!
+
+### Parameters 
+ - -t required! You should gave the path where Aries to exported API Doc.
+ - -f required! You should point to where the <b>publish</b> folder is.
+ - -b required! The base path of your API. Actually, it is not a necessary field, but we recommend it. 
+ - -s Optional! The start class name of your project. if not given, it would use the default field <b>StartUp</b>
+ - -v Optional! The version number of raml. If not given, it would use the default value <b>1.0</b>.
 
 The example project is here : https://github.com/CodeBabyBear/AriesDoc/tree/master/test/Example
 
