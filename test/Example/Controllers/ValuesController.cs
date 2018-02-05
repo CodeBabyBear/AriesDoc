@@ -14,7 +14,23 @@ namespace Example.Controllers
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
-        // GET api/values
+        /// <summary>
+        /// GET api/values
+        /// sdsa
+        /// afafas
+        /// </summary>
+        /// <param name="gg">
+        /// sfsdf
+        /// fdsdfsd
+        /// adasdf
+        /// </param>
+        /// <param name="cc"></param>
+        /// <response code="200">
+        /// dada
+        /// dafaf
+        /// sda
+        /// </response>
+        /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(404, Type = typeof(bool))]
         [ProducesResponseType(200, Type = typeof(IEnumerable<string>))]
@@ -25,6 +41,9 @@ namespace Example.Controllers
 
         /// <summary>
         /// GET api/values/5
+        /// dsdad
+        /// dsdsadad
+        /// sdad
         /// </summary>
         /// <param name="id">dadasd</param>
         /// <returns></returns>

@@ -8,10 +8,12 @@ namespace Pandv.AriesDoc.Generator.RAML
     public class MethodConverterV08 : IMethodConverter
     {
         protected readonly IParameterConverter parameterConverter;
+        private readonly IComments comments;
 
-        public MethodConverterV08(IParameterConverter parameterConverter)
+        public MethodConverterV08(IParameterConverter parameterConverter, IComments comments)
         {
             this.parameterConverter = parameterConverter;
+            this.comments = comments;
         }
 
         public IRAMLElement Convert(ApiDescription api)
@@ -20,6 +22,7 @@ namespace Pandv.AriesDoc.Generator.RAML
             SetQueryParameters(method, api);
             SetBody(method, api);
             SetResponses(method, api);
+            comments.SetCommentToMethod(api, method);
             return method;
         }
 

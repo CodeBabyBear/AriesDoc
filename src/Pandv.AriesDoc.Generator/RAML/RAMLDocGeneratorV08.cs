@@ -10,12 +10,14 @@ namespace Pandv.AriesDoc.Generator.RAML
         protected readonly IApiDescriptionGroupCollectionProvider apiDescription;
         protected readonly IParameterConverter parameterConverter;
         protected readonly IMethodConverter methodConverter;
+        protected readonly IComments comments;
 
-        public RAMLDocGeneratorV08(IApiDescriptionGroupCollectionProvider apiDescription, IParameterConverter parameterConverter, IMethodConverter methodConverter)
+        public RAMLDocGeneratorV08(IApiDescriptionGroupCollectionProvider apiDescription, IParameterConverter parameterConverter, IMethodConverter methodConverter, IComments comments)
         {
             this.apiDescription = apiDescription;
             this.parameterConverter = parameterConverter;
             this.methodConverter = methodConverter;
+            this.comments = comments;
         }
 
         public IEnumerable<IDocument> Generate()
@@ -63,6 +65,7 @@ namespace Pandv.AriesDoc.Generator.RAML
                 {
                     resource.UriParameters.AddElement(parameterConverter.Convert(paramter));
                 }
+                comments.SetCommentToUriParameters(resource.UriParameters, item);
             }
         }
     }
