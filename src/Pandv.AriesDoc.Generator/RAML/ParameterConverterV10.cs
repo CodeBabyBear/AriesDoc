@@ -9,13 +9,15 @@ namespace Pandv.AriesDoc.Generator.RAML
     public class ParameterConverterV10 : ParameterConverterV08
     {
         protected IDictionary<string, ObjectType> ramlTypes = new Dictionary<string, ObjectType>();
+        protected readonly IComments comments;
 
-        public ParameterConverterV10() : base()
+        public ParameterConverterV10(IComments comments) : base()
         {
             var date = "datetime";
             typeMap[typeof(DateTime).FullName] = date;
             typeMap[typeof(DateTime?).FullName] = date;
             typeMap.Add(typeof(object).FullName, "object");
+            this.comments = comments;
         }
 
         public override string GenerateSchema(Type type)
@@ -131,7 +133,9 @@ namespace Pandv.AriesDoc.Generator.RAML
                     //Required =
                 };
                 ot.AddPropertyType(p);
+                comments.SetCommentToProperty(p, item);
             }
+            comments.SetCommentToClass(ot, type);
             return ot;
         }
 

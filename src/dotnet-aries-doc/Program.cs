@@ -15,11 +15,7 @@ namespace Pandv.AriesDoc
     {
         public static int Main(string[] args)
         {
-            
-           var json = "{\"RamlVersion\": \"1.0\",\"StartupClassName\": \"Startup\",\"BaseUrl\": \"http://www.test.com\",\"DocDirectory\": \"D:\\\\code\\\\AriesDoc\\\\test\\\\Example\\\\bin\\\\Release\\\\netcoreapp2.0\\\\publish\",\"PublishDllDirectory\": \"D:\\\\code\\\\AriesDoc\\\\test\\\\Example\\\\bin\\\\Release\\\\netcoreapp2.0\\\\publish\",\"IsRelativePath\": true,\"XmlCommentsFile\": \"D:\\\\code\\\\AriesDoc\\\\test\\\\Example\\\\bin\\\\Release\\\\netcoreapp2.0\\\\doc.xml\"}";
-            Generate(JsonConvert.DeserializeObject<DocConfig>(json));
-            return 0;
-            //return ExecCommand(args);
+           return ExecCommand(args);
         }
 
         private static int ExecCommand(string[] args)

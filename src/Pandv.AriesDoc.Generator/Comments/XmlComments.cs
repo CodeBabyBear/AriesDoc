@@ -42,6 +42,29 @@ namespace Pandv.AriesDoc.Generator
             return builder.ToString();
         }
 
+        private string GetCommentIdForType(Type type)
+        {
+            var builder = new StringBuilder("T:");
+            AppendFullTypeName(type, builder, expandGenericArgs: false);
+
+            return builder.ToString();
+        }
+
+        private string GetCommentIdForProperty(PropertyInfo propertyInfo)
+        {
+            var builder = new StringBuilder("P:");
+            AppendFullTypeName(propertyInfo.DeclaringType, builder);
+            builder.Append(".");
+            AppendPropertyName(propertyInfo, builder);
+
+            return builder.ToString();
+        }
+
+        private void AppendPropertyName(PropertyInfo propertyInfo, StringBuilder builder)
+        {
+            builder.Append(propertyInfo.Name);
+        }
+
         private void AppendFullTypeName(Type type, StringBuilder builder, bool expandGenericArgs = false)
         {
             if (type.Namespace != null)
@@ -149,6 +172,27 @@ namespace Pandv.AriesDoc.Generator
                 if (methodNode == null) return;
                 ApplyParamsXmlToActionParameters(uriParameters, methodNode);
             }
+        }
+
+        public void SetCommentToClass(ObjectType ot, Type type)
+        {
+            if (!Cannavigator()) return;
+            var id = GetCommentIdForType(type);
+            var typeNode = navigator.SelectSingleNode(string.Format(MemberXPath, id));
+            var summaryNode = typeNode?.SelectSingleNode(SummaryXPath);
+            if (summaryNode != null)
+                ot.Description.Value = XmlCommentsTextHelper.Humanize(summaryNode.InnerXml);
+
+        }
+
+        public void SetCommentToProperty(PropertyType propertyType, PropertyInfo property)
+        {
+            if (!Cannavigator()) return;
+            var id = GetCommentIdForProperty(property);
+            var typeNode = navigator.SelectSingleNode(string.Format(MemberXPath, id));
+            var summaryNode = typeNode?.SelectSingleNode(SummaryXPath);
+            if (summaryNode != null)
+                propertyType.Description.Value = XmlCommentsTextHelper.Humanize(summaryNode.InnerXml);
         }
     }
 }

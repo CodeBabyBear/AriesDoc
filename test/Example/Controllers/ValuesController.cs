@@ -3,8 +3,15 @@ using System.Collections.Generic;
 
 namespace Example.Controllers
 {
+    /// <summary>
+    /// testad
+    /// afa
+    /// </summary>
     public enum Test
     {
+        /// <summary>
+        /// dadasd
+        /// </summary>
         None,
         A,
         B
@@ -59,11 +66,10 @@ namespace Example.Controllers
         {
         }
 
-        // PUT api/values/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody]string value)
-        //{
-        //}
+        [HttpPut]
+        public void Put([FromBody]Student value)
+        {
+        }
 
         // DELETE api/values/5
         //[HttpDelete("{id}")]
